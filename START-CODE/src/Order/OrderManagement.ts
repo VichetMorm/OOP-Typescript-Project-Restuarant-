@@ -16,15 +16,21 @@ export class OrderManager {
         return this.orders;
     }
 
-    getListOfPayMentEachTable(){
-        let listOfPayMent:{ tableID:number; payment:number}[]=[];
+    getOneOrder(id:number):Order{
+        return this.orders[id];
+    }
+
+    listOfPayMentEachTable(){
+        let listOfPayMent:{ tableID:number; listMenus:MenuItem[]; totalPayMent:number}[]=[];
         for(let orders of this.orders){
             let totalPrice:number = 0;
             let order = orders.menuItems;
-            for(let price of order){
-                totalPrice += price.getPrice();
+            let listMenus:MenuItem[]=[]
+            for(let menu of order){
+                totalPrice += menu.getPrice();
+                listMenus.push(menu);
             }
-            let tablePay={'tableID':orders.getTableId(), 'payment': totalPrice}
+            let tablePay={'tableID':orders.getTableId(),"listMenus":listMenus,  'totalPayMent': totalPrice}
            
             listOfPayMent.push(tablePay);
         }
@@ -32,12 +38,13 @@ export class OrderManager {
     }
 
     getPaymentInATable(id:number){
-        let paymentTables = this.getListOfPayMentEachTable();
+        let paymentTables = this.listOfPayMentEachTable();
         for(let paymentTable of paymentTables){
             if(id === paymentTable.tableID){
                 return paymentTable;
             }
         }
     }
+
 
 }

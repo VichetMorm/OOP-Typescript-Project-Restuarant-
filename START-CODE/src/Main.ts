@@ -6,7 +6,6 @@ import { HumanManager } from "./human/Humanmanager";
 import { Customer } from "./human/customer/Customer";
 import { Chef } from "./human/staff/Chef";
 import { Gender } from "./human/Person";
-import { Cashier } from "./human/staff/Casheir";
 import { Staff, StaffCategory } from "./human/staff/Staff";
 import { Restaurant } from "./Restaurant";
 import { Waiter } from "./human/staff/waiter";
@@ -14,28 +13,27 @@ import { TableStatus } from "./rooms/TableStatus";
 import { RoomsManager } from "./rooms/RoomsManager";
 import { Order } from "./Order/Order";
 import { MenuItem } from "./menu/Menu";
-import { drinkCategory, foodCategory } from "./menu/menuCategory";
-import { CalendarManager } from "./calendar/CalendarManager";
-import { DateTime } from "./calendar/DateTime";
-import { CookingAppointment } from "./calendar/CookingAppointment";
-import { EventCategory } from "./calendar/Event";
+import { TypeOfFoods } from "./menu/menuCategory";
+
 //_________________restaurant_________________________________
 const Vichet_Restuarant = new Restaurant("Vichet Romdul", "KPT");
 //_____________________________Humanmanager_______________________________________
 // ___________________chef______________________________________
 const tim_chef = new Chef(StaffCategory.CHEF, "Tim", 18, Gender.MALE);
 tim_chef.setSalary(3000);
-//___________________cashier___________________________________
-const vansoa_cashier = new Cashier(StaffCategory.CASHIER, "Vansoa", 25, Gender.MALE)
-vansoa_cashier.setSalary(4000);
+
 //__________________Waiter______________________________________
 const nga_waiter = new Waiter(StaffCategory.WAITER, "Nga", 22, Gender.MALE);
+const phim_waiter = new Waiter(StaffCategory.WAITER, "Phim", 24, Gender.MALE);
+const shaut_waiter = new Waiter(StaffCategory.WAITER, "Shaut", 21, Gender.MALE);
 nga_waiter.setSalary(4200);
+
 
 //____________ add staff to restuarant _______________________
 Vichet_Restuarant.hr.setStaff(tim_chef);
-Vichet_Restuarant.hr.setStaff(vansoa_cashier);
 Vichet_Restuarant.hr.setStaff(nga_waiter);
+Vichet_Restuarant.hr.setStaff(phim_waiter);
+Vichet_Restuarant.hr.setStaff(shaut_waiter);
 //_______________________Customers________________________________________
 let customer1 = new Customer("Shaut", 50, Gender.MALE);
 let customer2 = new Customer("Sarath", 40, Gender.MALE)
@@ -73,40 +71,39 @@ Vichet_Restuarant.rooms.addRoom(room1);
 // console.log("Room in restaurant : ", Vichet_Restuarant.rooms);
 
 //_______________________________Menu_____________________________
-let rice = new MenuItem(foodCategory.RICE, 2500);
-let roast = new MenuItem(foodCategory.ROAST_CHECKENT, 15000)
-let coca = new MenuItem(drinkCategory.COCA, 3000)
-let sprite = new MenuItem(drinkCategory.SPRITE, 3400)
-let wine = new MenuItem(drinkCategory.WINE, 50000)
+let rice = new MenuItem(TypeOfFoods.PROTEIEN, "Rice", 200);
+let roast = new MenuItem(TypeOfFoods.MEAT, "Roast kitchen", 2500);
+let coca = new MenuItem(TypeOfFoods.SOFTDRINK, "COCA_COLA", 3000);
+let apple = new MenuItem(TypeOfFoods.FRUITE_VEGETABLE, "APPLE", 2000)
+let wine = new MenuItem(TypeOfFoods.SOFTDRINK, "Wine", 50000)
 //_______________________________Order_____________________________
-let order1 = new Order( 1, table1)
-order1.menuSelected(rice);
-order1.menuSelected(roast);
-order1.menuSelected(sprite);
+let order1 = new Order( 1, table1);
+order1.addMenu(rice);
+order1.addMenu(roast);
+order1.addMenu(apple);
 let order2 = new Order(2, table4);
-order2.menuSelected(wine);
-order2.menuSelected(roast);
-Vichet_Restuarant.orders.addOrder(order1);
+order2.addMenu(wine);
+order2.addMenu(roast);
 
 let order3 = new Order(3, table2);
-order3.menuSelected(coca);
-order3.menuSelected(rice);
-order3.menuSelected(roast);
-Vichet_Restuarant.orders.addOrder(order3);
+order3.addMenu(coca);
+order3.addMenu(rice);
+order3.addMenu(roast);
+nga_waiter.addOrder(order3);
+shaut_waiter.addOrder(order2);
+phim_waiter.addOrder(order1)
+//________________________________add order______________________________________
+Vichet_Restuarant.orders.addOrder(order1)
+Vichet_Restuarant.orders.addOrder(order3)
+Vichet_Restuarant.orders.addOrder(order2)
+//____________________________
+tim_chef.addMenuToChef(order1);
+tim_chef.addMenuToChef(order2)
+tim_chef.addMenuToChef(order3)
 
-// console.log("All payment : ", Vichet_Restuarant.orders.getListOfPayMentEachTable());
-// console.log("Payment at table : ", Vichet_Restuarant.orders.getPaymentInATable(1));
-//___________________________kitchen__________________________
+// console.log(tim_chef.getMenuForChef());
+// console.log(tim_chef.getDone());
 
-Vichet_Restuarant.kitchens.addChef(tim_chef);
-Vichet_Restuarant.kitchens.addOrders(order1)
-Vichet_Restuarant.kitchens.addOrders(order2);
-Vichet_Restuarant.kitchens.addOrders(order3);
+console.log(Vichet_Restuarant);
 
-//____________________________Calenda__________________________
-let dateCooking1 = new DateTime(12, 23, 10, 6, 2022)
-let dateCooking2 = new DateTime(12, 50, 10, 6, 2022)
 
-let cookingappointment1 = new CookingAppointment(EventCategory.COOKER_APPOINTEMENT, dateCooking1, dateCooking2)
-Vichet_Restuarant.Calendars.addEvent(cookingappointment1);
-console.log("Time to cooking : ", Vichet_Restuarant.Calendars);

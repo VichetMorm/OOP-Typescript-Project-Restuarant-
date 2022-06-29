@@ -1,20 +1,8 @@
 
-
-export enum foodCategory{
-    RICE="Rice",
-    FRIED="Fried",
-    SOUP="Soup",
-    STACK="Stack",
-    SALAD="Salad",
-    ROAST_CHECKENT="Roast_Checkent",
-    BREAK="Break",
+export enum TypeOfFoods{
+    PROTEIEN="PROTEIEN",
+    SOFTDRINK="SOFTDRINK",
+    CAKE="CAKE",
+    MEAT="MEAT",
+    FRUITE_VEGETABLE="FRUIT_VEGETABLE"
 }
-
-export enum drinkCategory{
-    WATER='Water',
-    COCA="Coca",
-    SPRITE="Sprite",
-    WINE="Wine"
-}   
-
-
